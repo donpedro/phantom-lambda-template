@@ -1,18 +1,18 @@
 {
-  "name": "phantom-lambda-template",
+  "name": "html-pdf-lambda-template",
   "version": "1.0.0",
-  "description": "A template for automated deployment of phantomjs on AWS Lambda",
+  "description": "A template for automated deployment of html-pdf on AWS Lambda",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:justengland/phantom-lambda-template.git"
+    "url": "git@github.com:donpedro/phantom-lambda-template.git"
   },
   "author": "jengland",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/justengland/phantom-lambda-template/issues"
+    "url": "https://github.com/donpedro/phantom-lambda-template/issues"
   },
-  "homepage": "https://github.com/justengland/phantom-lambda-template",
+  "homepage": "https://github.com/donpedro/phantom-lambda-template",
   "dependencies": {
     "html-pdf": "^2.2.0",
     "mocha": "^3.2.0"
@@ -29,6 +29,7 @@
     "integration-test": "mocha test/*"
   },
   "keywords": [
+    "html-pdf",
     "phantomjs",
     "aws",
     "lambda",

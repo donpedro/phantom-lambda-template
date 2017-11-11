@@ -14,8 +14,8 @@
   },
   "homepage": "https://github.com/justengland/phantom-lambda-template",
   "dependencies": {
-    "mocha": "^3.2.0",
-    "phantomjs-prebuilt": "^2.1.14"
+    "html-pdf": "^2.2.0",
+    "mocha": "^3.2.0"
   },
   "devDependencies": {
     "aws-sdk": "^2.7.8"

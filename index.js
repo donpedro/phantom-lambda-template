@@ -1,23 +1,58 @@
 
+var pdf = require('html-pdf');
 var AWS = require('aws-sdk');
-var phantomjs = require('phantomjs-prebuilt');
+
+process.env['PATH'] = process.env['PATH'] + ':' + process.env['LAMBDA_TASK_ROOT'];
+
+var options = { format: 'Letter'/*, phantomPath: './phantomjs_lambda/phantomjs_linux-x86_64' */};
+//var S3config = { bucketName: 'your-bucket' }; //Change to your bucket name
 
 exports.handler = function(event, context, callback) {
-    console.log('I am on master');
-    var phantom = phantomjs.exec('phantomjs-script.js', 'arg1', 'arg2');
+  //Get the values from the request
+  console.log("event: " + JSON.stringify(event));
+  
+  const body = JSON.parse(event.body);
+  var htmlString = body.htmlString;
+  var fileName = event.fileName;
 
-    phantom.stdout.on('data', function(buf) {
-        console.log('[STR] stdout "%s"', String(buf));
-    });
-    phantom.stderr.on('data', function(buf) {
-        console.log('[STR] stderr "%s"', String(buf));
-    });
-    phantom.on('close', function(code) {
-        console.log('[END] code', code);
-    });
+  //Create the PDF file from the HTML string
+  pdf.create(htmlString, options).toBuffer(function(err, buffer){
+      if (err){
+        console.log("There was an error generating the PDF file");
+        console.log(err);
+        var error = new Error("There was an error generating the PDF file");
+        callback(error);
+      }
+      else {
+        callback(null, {
+            statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: buffer.toString('base64')
+          });          
+/*          
+        var s3 = new AWS.S3();
+        var params = {
+            Bucket : S3config.bucketName,
+            Key : 'pdfs/' + fileName + '.pdf',
+            Body : buffer
+        }
 
-    phantom.on('exit', code => {
-        callback(null, 'fin!!');
-    });
+        s3.putObject(params, function(err, data) {
+            if (err) {
+                console.log("There was an error while saving the PDF to S3");
+                console.log(err);
+                var error = new Error("There was an error while saving the PDF to S3");
+                callback(error);
+            } else {
+                console.log('Created PDF with data:');
+                console.log(data);
 
+                context.done(null, { result: 'Created PDF file' });
+            }
+        });
+*/        
+      }
+  });
 };

@@ -19,7 +19,7 @@ exports.handler = function(event, context, callback) {
   //Get the values from the request
   console.log("event: " + JSON.stringify(event));
   
-  const body = event.body;
+  const body = JSON.parse(event.body);
   var htmlString = body.htmlString;
   Object.assign(options, body.options); // merging an options object that was (possibly) passed in with our default options object
 
